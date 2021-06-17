@@ -1,32 +1,24 @@
 <?php
 $id = $_GET['id'];
-$dsn = 'mysql:host=db;dbname=library;charset=utf8';
-//ここで使うDBのユーザーがlocalhostのものだと失敗する
-$user = 'blog_user2';
-$password = 'kosakuka0308';
+require_once('DbBooks.php');
 
-try {
-    $dbh = new PDO($dsn, $user, $password);
-    // echo "接続成功\n";
+$dbBooks = new DbBooks();//クラスを用いた処理
+$dbh = $dbBooks->dbConnect();
 
-    if(empty($id)){
-        echo "idが無効です";
-    }else{
-        $stmt = $dbh->query("select * from books where id = '{$id}' ");
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // var_dump($result);
 
-        $bookName = $result[0]["name"];
-        $bookAuthor = $result[0]["author"];
-        $bookContent = $result[0]["content"];
-    }
-
-    $dbh = null;
-
-} catch (PDOException $e) {
-    $dbh = null;
-    echo "接続失敗: " . $e->getMessage() . "\n";
-    exit();
+if( !empty($id) ){
+    //SQL準備(SQLインジェクション対策のため、以下のような2行を行っている)
+    $stmt = $dbh->prepare("select * from books where id = :id ");
+    $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+    //SQL実行
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $bookName = $result[0]["name"];
+    $bookAuthor = $result[0]["author"];
+    $bookContent = $result[0]["content"];
+}else{
+    //これだけで良いのか？
+    echo "無効なidです";
 }
 
 ?>

@@ -1,34 +1,22 @@
 <?php
-$bookName = $_GET['bookName'];
-$dsn = 'mysql:host=db;dbname=library;charset=utf8';
-//ここで使うDBのユーザーがlocalhostのものだと失敗する
-$user = 'blog_user2';
-$password = 'kosakuka0308';
+    require_once('DbBooks.php');
 
-try {
-    $dbh = new PDO($dsn, $user, $password,[
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_EMULATE_PREPARES => false,
-    ]);
-    // echo "接続成功\n";
+    $bookName = $_GET['bookName'];
+    $dbBooks = new DbBooks();//クラスを用いた処理
+    $dbh = $dbBooks->dbConnect();
+    
 
-    $stmt = $dbh->query("select * from books");
-    if(!empty($bookName)){
+    if( !empty($bookName) ){
         //SQL準備(SQLインジェクション対策のため、以下のような2行を行っている)
         $stmt = $dbh->prepare("select * from books where name like :bookName ");
         $stmt->bindValue(':bookName', "%".$bookName."%", PDO::PARAM_INT);
         //SQL実行
         $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }else{
+        $result = $dbBooks->getAllBooks();
     }
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    $dbh = null;
-
-} catch (PDOException $e) {
-    $dbh = null;
-    echo "接続失敗: " . $e->getMessage() . "\n";
-    exit();
-}
+    
 
 ?>
 
