@@ -1,5 +1,5 @@
 <?php
-$dsn = 'mysql:host=db;dbname=blog_app;charset=utf8';
+$dsn = 'mysql:host=db;dbname=library;charset=utf8';
 //ここで使うDBのユーザーがlocalhostのものだと失敗する
 $user = 'blog_user2';
 // $user = 'root';
@@ -10,12 +10,15 @@ try {
     $dbh = new PDO($dsn, $user, $password);
     echo "接続成功\n";
 
-    $blog_data = $dbh->query("select * from blog");
-    // var_dump($blog_data);
+    $stmt = $dbh->query("select * from books where name like '%a%' ");
+    // $stmt = $dbh->query("select * from books where name = 'php' ");
+    // var_dump($stmt);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($result);
 
-	// 取得したデータを出力
-	foreach( $blog_data as $value ) {
-		echo "{$value['content']}\n";
+        // 取得したデータを出力
+	foreach( $result as $book ) {
+		echo "{$book['id']} , {$book['name']}</br>";
 	}
 
     $dbh = null;
