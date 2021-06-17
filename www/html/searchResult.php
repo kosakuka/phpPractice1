@@ -44,6 +44,7 @@
         </tr>
         <?php endforeach?>
     </table>
+    <p><a href="create.html">書籍を新規登録(管理者のみ可能)</a></p>
     <p><a href="search.html">検索画面に戻る</a></p>
 </body>
 </html>

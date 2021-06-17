@@ -32,21 +32,17 @@ if( !empty($bookId) ){
     <title>Document</title>
 </head>
 <body>
-    <h1><?php echo $bookName;?>の詳細</h1>
-    <table border="1">
-        <tr>
-            <th>書籍名</th>
-            <th>著者</th>
-            <th>内容</th>
-        </tr>
-        <tr>
-            <td><?php echo $bookName;?></td>
-            <td><?php echo $bookAuthor;?></td>
-            <td><?php echo $bookContent;?></td>
-        </tr>
-    </table>
-    <p><a href="update.php?id=<?php echo $bookId?>">この書籍を更新する(管理者のみ可能)</a></p>
-    <p><a href="delete.php?id=<?php echo $bookId?>">この書籍を削除する(管理者のみ可能)</a></p>
-    <p><a href="search.html">検索画面に戻る</a></p>
+    <h1><?php echo $bookName;?>の編集画面</h1>
+
+    <p>管理者さん、編集してください</p>
+    <form action="create.php" method="post">
+        <input type="hide" name="bookId" value="<?php echo $bookId;?>" hidden >
+        <p><input type="text" name="bookName" placeholder="本の名前（必須）" value="<?php echo $bookName;?>" required></p>
+        <p><input type="text" name="bookAuthor" placeholder="著者の名前（必須）" value="<?php echo $bookAuthor;?>" required></p>
+        <p><textarea name="bookContent" cols="30" rows="10" placeholder="本の詳細" ><?php echo $bookContent;?></textarea></p>
+        <input type="submit" value="更新">
+    </form>
+
+    <p><a href="aboutBook.php?id=<?php echo $bookId?>">詳細画面に戻る</a></p>
 </body>
 </html>
