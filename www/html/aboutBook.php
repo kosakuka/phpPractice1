@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $bookId = $_GET['id'];
 require_once('DbBooks.php');
 
@@ -45,8 +47,14 @@ if( !empty($bookId) ){
             <td><?php echo $bookContent;?></td>
         </tr>
     </table>
-    <p><a href="update.php?id=<?php echo $bookId?>">この書籍を更新する(管理者のみ可能)</a></p>
-    <p><a href="delete.php?id=<?php echo $bookId?>">この書籍を削除する(管理者のみ可能)</a></p>
-    <p><a href="search.html">検索画面に戻る</a></p>
+    
+    <?php 
+        if($_SESSION['userName'] == "admin"){
+            echo '<p><a href="update.php?id='.$bookId.'">この書籍を更新する(管理者のみ可能)</a></p>';
+            echo '<p><a href="delete.php?id='.$bookId.'">この書籍を削除する(管理者のみ可能)</a></p>';
+        }
+    ?>
+    
+    <p><a href="search.php">検索画面に戻る</a></p>
 </body>
 </html>

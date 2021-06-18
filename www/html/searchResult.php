@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once('DbBooks.php');
 
     $bookName = $_GET['bookName'];
@@ -44,7 +45,13 @@
         </tr>
         <?php endforeach?>
     </table>
-    <p><a href="create.html">書籍を新規登録(管理者のみ可能)</a></p>
-    <p><a href="search.html">検索画面に戻る</a></p>
+
+    <?php 
+        if($_SESSION['userName'] == "admin"){
+            echo '<p><a href="create.php">書籍を新規登録(管理者のみ可能)</a></p>';
+        }
+    ?>
+    
+    <p><a href="search.php">検索画面に戻る</a></p>
 </body>
 </html>

@@ -1,44 +1,27 @@
 <?php
-$bookId = $_POST['bookId'];
-$bookName = $_POST['bookName'];
-$bookAuthor = $_POST['bookAuthor'];
-$bookContent = $_POST['bookContent'];
-
-require_once('DbBooks.php');
-
-$dbBooks = new DbBooks();//クラスを用いた処理
-$dbh = $dbBooks->dbConnect();
-
-if( empty($bookName) || empty($bookAuthor) ){
-    header('Location: create.html');//情報登録ページに遷移
-}else if( !empty($bookId) ){
-    //更新処理
-    //SQL準備(SQLインジェクション対策のため、以下のような処理を行っている)
-    $stmt = $dbh->prepare(
-        "UPDATE `books` SET 
-        `name` = :bookName, 
-        `author` = :bookAuthor, 
-        `content` = :bookContent
-        WHERE `id` = :bookId ;");
-    $stmt->bindValue(':bookId', (int)$bookId, PDO::PARAM_INT);
-    $stmt->bindValue(':bookName', $bookName, PDO::PARAM_INT);
-    $stmt->bindValue(':bookAuthor', $bookAuthor, PDO::PARAM_INT);
-    $stmt->bindValue(':bookContent', $bookContent, PDO::PARAM_INT);
-    //SQL実行
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    header('Location: searchResult.php');//検索結果が表示されているページに遷移
-}else{
-    //登録処理
-    //SQL準備(SQLインジェクション対策のため、以下のような処理を行っている)
-    $stmt = $dbh->prepare("insert into books (`name`, `author`, `content`) values (:bookName, :bookAuthor, :bookContent);");
-    $stmt->bindValue(':bookName', $bookName, PDO::PARAM_INT);
-    $stmt->bindValue(':bookAuthor', $bookAuthor, PDO::PARAM_INT);
-    $stmt->bindValue(':bookContent', $bookContent, PDO::PARAM_INT);
-    //SQL実行
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    header('Location: searchResult.php');//検索結果が表示されているページに遷移
+session_start();
+if($_SESSION['userName'] != "admin"){
+    header('Location: blank.html?label=requireLogin');
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>書籍の新規登録</h1>
+    <p>管理者さん、登録してください</p>
+    <form action="createPost.php" method="post">
+        <p><input type="text" name="bookName" placeholder="本の名前（必須）" required></p>
+        <p><input type="text" name="bookAuthor" placeholder="著者の名前（必須）" required></p>
+        <p><textarea name="bookContent" cols="30" rows="10" placeholder="本の詳細"></textarea></p>
+        <input type="submit" value="登録">
+    </form>
+    <p><a href="search.php">検索画面に戻る</a></p>
+</body>
+</html>

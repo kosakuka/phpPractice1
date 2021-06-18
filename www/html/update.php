@@ -1,4 +1,9 @@
 <?php
+session_start();
+if($_SESSION['userName'] != "admin"){
+    header('Location: blank.html?label=requireLogin');
+}
+
 $bookId = $_GET['id'];
 require_once('DbBooks.php');
 
@@ -35,7 +40,7 @@ if( !empty($bookId) ){
     <h1><?php echo $bookName;?>の編集画面</h1>
 
     <p>管理者さん、編集してください</p>
-    <form action="create.php" method="post">
+    <form action="createPost.php" method="post">
         <input type="hide" name="bookId" value="<?php echo $bookId;?>" hidden >
         <p><input type="text" name="bookName" placeholder="本の名前（必須）" value="<?php echo $bookName;?>" required></p>
         <p><input type="text" name="bookAuthor" placeholder="著者の名前（必須）" value="<?php echo $bookAuthor;?>" required></p>

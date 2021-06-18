@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    var url = new URL(window.location.href);//URL取得
+    var params = url.searchParams;//URLに関するオブジェクトの作成
+    var label = params.get("label");//labelという名のクエリパラメータの値を取得
+    if(label == "incorrectPassword"){
+        alert("パスワードが正しくありません。");
+        location.href = "search.php";//検索画面へ遷移
+    }else if(label == "error"){
+        alert("不明なエラーです");
+        location.href = "search.php";//検索画面へ遷移
+    }else if(label == "successLogin"){
+        alert("ログインに成功しました");
+        location.href = "search.php";//検索画面へ遷移
+    }else if(label == "successLogout"){
+        alert("ログアウトに成功しました");
+        location.href = "search.php";//検索画面へ遷移
+    }else if(label == "requireLogin"){
+        alert("ログインしてください。");
+        location.href = "search.php";//検索画面へ遷移
+    }else if(label == "successDelete"){
+        alert("削除に成功しました。");
+        location.href = "searchResult.php";//検索結果表示画面へ遷移
+    }else if(label == "errorDelete"){
+        alert("無効な処理です。削除に失敗しました。");
+        location.href = "search.php";//検索画面へ遷移
+    }else if(label == "successCreate"){
+        alert("登録に成功しました。");
+        location.href = "searchResult.php";//検索結果表示画面へ遷移
+    }else if(label == "successUpdate"){
+        alert("更新に成功しました。");
+        location.href = "searchResult.php";//検索結果表示画面へ遷移
+    }else if(label == "errorCreate"){
+        alert("無効な処理です。登録、更新に失敗しました。");
+        location.href = "search.php";//検索画面へ遷移
+    }
+
+</script>
